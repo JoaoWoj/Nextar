@@ -10,7 +10,6 @@ public record CadastroDTO(@NotBlank(message = "Login não pode ser vazio")
                           @NotBlank(message = "Password não pode ser vazio")
                           @NotNull(message = "Password não pode ser vazio")
                           String password,
-                          @NotBlank(message = "Role não pode ser vazia")
                           @NotNull(message = "Role não pode ser vazia")
                           UserRoleEnum role) {
 

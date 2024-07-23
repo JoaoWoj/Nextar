@@ -5,6 +5,7 @@ import static com.nextar.model.enumerator.UserRoleEnum.ADMIN;
 import java.util.Collection;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nextar.model.enumerator.UserRoleEnum;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -51,6 +52,7 @@ public class UserEntity implements UserDetails{
 	@Column(nullable = false)
 	private UserRoleEnum role;
 
+	@JsonIgnore
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		if(this.role == ADMIN) {
@@ -60,26 +62,31 @@ public class UserEntity implements UserDetails{
 		}
 	}
 
+	@JsonIgnore
 	@Override
 	public String getUsername() {
 		return login;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isAccountNonLocked() {
 		return true;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isEnabled() {
 		return true;
