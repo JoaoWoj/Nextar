@@ -12,7 +12,10 @@ public class CalculoUtils {
         Stack<Double> valores = new Stack<>();
         Stack<Character> operadores = new Stack<>();
 
+        // Percorrer array da expressão
         for (int i = 0; i < array.length; i++) {
+
+            // Valida se character é um número ou um ponto decimal
             if ((array[i] >= '0' && array[i] <= '9')
                     || array[i] == '.') {
                 StringBuilder sb = new StringBuilder();
@@ -22,28 +25,25 @@ public class CalculoUtils {
                     sb.append(array[i]);
                     i++;
                 }
+                // Converte o numero para double e adiciona na pilha de valores
                 valores.push(
                         Double.parseDouble(sb.toString()));
                 i--;
             } else if (array[i] == '+' || array[i] == '-'
                     || array[i] == '*'
                     || array[i] == '/') {
-                // If the character is an operator, pop and
-                // apply operadores with higher precedence
                 while (!operadores.isEmpty()
-                        && hasPrecedence(array[i],
+                        && verificaPrecedenciaDosOperadores(array[i],
                         operadores.peek())) {
-                    valores.push(applyOperator(
+                    valores.push(aplicaOperadores(
                             operadores.pop(), valores.pop(),
                             valores.pop()));
                 }
-                // Push the current operator to the
-                // operadores stack
                 operadores.push(array[i]);
             }
         }
         while (!operadores.isEmpty()) {
-            valores.push(applyOperator(operadores.pop(),
+            valores.push(aplicaOperadores(operadores.pop(),
                     valores.pop(),
                     valores.pop()));
         }
@@ -51,18 +51,13 @@ public class CalculoUtils {
         return valores.pop();
     }
 
-    private static boolean hasPrecedence(char operator1,
-                                         char operator2)
-    {
-        return (operator1 != '*' && operator1 != '/')
-                || (operator2 != '+' && operator2 != '-');
+    private static boolean verificaPrecedenciaDosOperadores(char operador1, char operador2) {
+        return (operador1 != '*' && operador1 != '/')
+                || (operador2 != '+' && operador2 != '-');
     }
 
-    // Function to apply the operator to two operands
-    private static double applyOperator(char operator,
-                                        double b, double a)
-    {
-        switch (operator) {
+    private static double aplicaOperadores(char operador, double b, double a) {
+        switch (operador) {
             case '+':
                 return a + b;
             case '-':

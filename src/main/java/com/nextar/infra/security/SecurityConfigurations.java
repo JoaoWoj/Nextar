@@ -25,6 +25,7 @@ public class SecurityConfigurations {
 	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		return httpSecurity
 				.csrf(csrf -> csrf.disable())
+				.headers(header -> header.frameOptions(flame -> flame.disable()))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers("/h2-console/**").permitAll()
@@ -35,7 +36,8 @@ public class SecurityConfigurations {
 						.requestMatchers(HttpMethod.GET, "/api/usuario/{id}").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.PUT, "/api/usuario/{id}").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.DELETE, "/api/usuario/{id}").hasRole("ADMIN")
-						.anyRequest().authenticated())
+						.anyRequest().authenticated()
+				)
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();
 	}

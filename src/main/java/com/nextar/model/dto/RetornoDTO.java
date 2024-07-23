@@ -2,9 +2,15 @@ package com.nextar.model.dto;
 
 import com.nextar.model.entity.CalculoEntity;
 
-public record RetornoDTO(Double resultado) {
+import java.math.BigDecimal;
+
+public record RetornoDTO(BigDecimal resultado) {
 
     public RetornoDTO(CalculoEntity entity){
-        this(entity.getResultado());
+        this(entity.getResultado().setScale(2));
+    }
+
+    public RetornoDTO(Double resultado){
+        this(new BigDecimal(resultado).setScale(2));
     }
 }

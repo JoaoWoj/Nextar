@@ -1,5 +1,10 @@
 package com.nextar.model.enumerator;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum UserRoleEnum {
 
     ADMIN("admin"),
@@ -7,11 +12,4 @@ public enum UserRoleEnum {
 
     private String role;
 
-    UserRoleEnum(String role) {
-        this.role = role;
-    }
-
-    public String getRole() {
-        return role;
-    }
 }

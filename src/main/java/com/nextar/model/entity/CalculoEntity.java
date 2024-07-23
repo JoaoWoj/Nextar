@@ -5,12 +5,15 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "expressions")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class CalculoEntity {
 
     @Id
@@ -19,16 +22,11 @@ public class CalculoEntity {
 
     @NotBlank
     @NotNull
+    @NonNull
     private String expressao;
 
-    @NotBlank
     @NotNull
-    @Column(scale=2)
-    private Double resultado;
-
-    public CalculoEntity(String expressao, Double resultado){
-        this.expressao = expressao;
-        this.resultado = resultado;
-    }
+    @NonNull
+    private BigDecimal resultado;
 
 }
