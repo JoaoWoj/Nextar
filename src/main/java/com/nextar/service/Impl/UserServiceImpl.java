@@ -35,8 +35,7 @@ public class UserServiceImpl implements UserService {
             if(login.isPresent()) {
                 return ResponseEntity.badRequest().body("Login Já existe!");
             }
-            String encrypetedPassword = new BCryptPasswordEncoder().encode(data.password());
-            UserEntity newUser = new UserEntity(data.login(), encrypetedPassword, data.role());
+            UserEntity newUser = new UserEntity(data.login(), encriptarSenha(data.password()), data.role());
 
             return  ResponseEntity.ok().body(this.userRepository.save(newUser));
         } catch (Exception e){
@@ -56,13 +55,13 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public ResponseEntity<UserEntity> update(Long id, UserEntity user) {
+    public ResponseEntity<UserEntity> update(Long id, UserEntity usuario) {
         try {
-            Optional<UserEntity> usuario =  userRepository.findById(id);
-            return usuario.map(item ->{
-                item.setLogin(user.getLogin());
-                item.setPassword(user.getPassword());
-                item.setRole(user.getRole());
+            Optional<UserEntity> usuarioSalvo =  userRepository.findById(id);
+            return usuarioSalvo.map(item ->{
+                item.setLogin(usuario.getLogin());
+                item.setPassword(encriptarSenha(usuario.getPassword()));
+                item.setRole(usuario.getRole());
                 return ResponseEntity.ok().body(userRepository.save(item));
             }).orElse(ResponseEntity.notFound().build());
         } catch (Exception e){
@@ -81,5 +80,9 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e){
             return ResponseEntity.notFound().build();
         }
+    }
+
+    private String encriptarSenha(String password){
+        return new BCryptPasswordEncoder().encode(password);
     }
 }
